@@ -1,15 +1,11 @@
 #!/usr/bin/python
-import json, re
+import json
+import re
 import random
 import sys
+from urllib.request import build_opener
 
 from bitcoin.main import from_string_to_bytes
-
-
-try:
-    from urllib.request import build_opener
-except:
-    from urllib2 import build_opener
 
 
 # Makes a request to a given URL (first arg) and optional params (second arg)
@@ -22,39 +18,39 @@ def make_request(*args):
     except Exception as e:
         try:
             p = e.read().strip()
-        except:
+        except Exception:
             p = e
         raise Exception(p)
 
 
 def is_testnet(inp):
-    '''Checks if inp is a testnet address or if UTXO is a known testnet TxID''' 
+    '''Checks if inp is a testnet address or if UTXO is a known testnet TxID'''
     if isinstance(inp, (list, tuple)) and len(inp) >= 1:
         return any([is_testnet(x) for x in inp])
-    elif not isinstance(inp, basestring):    # sanity check
+    elif not isinstance(inp, str):    # sanity check
         raise TypeError("Input must be str/unicode, not type %s" % str(type(inp)))
 
-    if not inp or (inp.lower() in ("btc", "testnet")): 
+    if not inp or (inp.lower() in ("btc", "testnet")):
         pass
 
-    ## ADDRESSES
+    # ADDRESSES
     if inp[0] in "123mn":
         if re.match("^[2mn][a-km-zA-HJ-NP-Z0-9]{26,33}$", inp):
             return True
         elif re.match("^[13][a-km-zA-HJ-NP-Z0-9]{26,33}$", inp):
             return False
         else:
-            #sys.stderr.write("Bad address format %s")
+            # sys.stderr.write("Bad address format %s")
             return None
 
-    ## TXID
+    # TXID
     elif re.match('^[0-9a-fA-F]{64}$', inp):
         base_url = "http://api.blockcypher.com/v1/btc/{network}/txs/{txid}?includesHex=false"
         try:
             # try testnet fetchtx
             make_request(base_url.format(network="test3", txid=inp.lower()))
             return True
-        except:
+        except Exception:
             # try mainnet fetchtx
             make_request(base_url.format(network="main", txid=inp.lower()))
             return False
@@ -68,9 +64,9 @@ def set_network(*args):
     '''Decides if args for unspent/fetchtx/pushtx are mainnet or testnet'''
     r = []
     for arg in args:
-        if not arg: 
+        if not arg:
             pass
-        if isinstance(arg, basestring):
+        if isinstance(arg, str):
             r.append(is_testnet(arg))
         elif isinstance(arg, (list, tuple)):
             return set_network(*arg)
@@ -120,7 +116,7 @@ def bci_unspent(*args):
                     "output": h+':'+str(o['tx_output_n']),
                     "value": o['value']
                 })
-        except:
+        except Exception:
             raise Exception("Failed to decode data: "+data)
     return u
 
@@ -169,7 +165,7 @@ def helloblock_unspent(*args):
         url = 'https://mainnet.helloblock.io/v1/addresses/%s/unspents?limit=500&offset=%s'
     o = []
     for addr in addrs:
-        for offset in xrange(0, 10**9, 500):
+        for offset in range(0, 10**9, 500):
             res = make_request(url % (addr, offset))
             data = json.loads(res.decode("utf-8"))["data"]
             if not len(data["unspents"]):
@@ -222,12 +218,12 @@ def history(*args):
                 except Exception as e:
                     try:
                         sys.stderr.write(e.read().strip())
-                    except:
+                    except Exception:
                         sys.stderr.write(str(e))
                     gathered = False
             try:
                 jsonobj = json.loads(data.decode("utf-8"))
-            except:
+            except Exception:
                 raise Exception("Failed to decode data: "+data)
             txs.extend(jsonobj["txs"])
             if len(jsonobj["txs"]) < 50:
@@ -261,7 +257,7 @@ def bci_pushtx(tx):
     if not re.match('^[0-9a-fA-F]*$', tx):
         tx = tx.encode('hex')
     return make_request(
-        'https://blockchain.info/pushtx', 
+        'https://blockchain.info/pushtx',
         from_string_to_bytes('tx='+tx)
     )
 
@@ -298,6 +294,7 @@ def helloblock_pushtx(tx):
         tx = tx.encode('hex')
     return make_request('https://mainnet.helloblock.io/v1/transactions',
                         'rawTxHex='+tx)
+
 
 pushtx_getters = {
     'bci': bci_pushtx,
@@ -441,6 +438,7 @@ def bci_get_block_header_data(inp):
         'nonce': j['nonce'],
     }
 
+
 def blockr_get_block_header_data(height, network='btc'):
     if network == 'testnet':
         blockr_url = "http://tbtc.blockr.io/api/v1/block/raw/"
@@ -472,9 +470,12 @@ def get_block_timestamp(height, network='btc'):
         raise Exception(
             'Unsupported network {0} for get_block_timestamp'.format(network))
 
-    import time, calendar
+    import calendar
+    import time
     if isinstance(height, list):
-        k = json.loads(make_request(blockr_url + ','.join([str(x) for x in height])).decode("utf-8"))
+        k = json.loads(make_request(
+            blockr_url + ','.join([str(x) for x in height])
+        ).decode("utf-8"))
         o = {x['nb']: calendar.timegm(time.strptime(x['time_utc'],
              "%Y-%m-%dT%H:%M:%SZ")) for x in k['data']}
         return [o[x] for x in height]
@@ -503,8 +504,12 @@ def get_txs_in_block(inp):
 
 
 def get_block_height(txhash):
-    j = json.loads(make_request('https://blockchain.info/rawtx/'+txhash).decode("utf-8"))
+    j = json.loads(
+        make_request(
+            'https://blockchain.info/rawtx/'+txhash
+        ).decode("utf-8"))
     return j['block_height']
+
 
 # fromAddr, toAddr, 12345, changeAddress
 def get_tx_composite(inputs, outputs, output_value, change_address=None, network=None):
@@ -513,23 +518,27 @@ def get_tx_composite(inputs, outputs, output_value, change_address=None, network
     outputs = [outputs] if not isinstance(outputs, list) else outputs
     network = set_network(change_address or inputs) if not network else network.lower()
     url = "http://api.blockcypher.com/v1/btc/{network}/txs/new?includeToSignTx=true".format(
-                  network=('test3' if network=='testnet' else 'main'))
+                  network=('test3' if network == 'testnet' else 'main'))
     is_address = lambda a: bool(re.match("^[123mn][a-km-zA-HJ-NP-Z0-9]{26,33}$", a))
     if any([is_address(x) for x in inputs]):
-        inputs_type = 'addresses'        # also accepts UTXOs, only addresses supported presently
+        # also accepts UTXOs, only addresses supported presently
+        inputs_type = 'addresses'
     if any([is_address(x) for x in outputs]):
         outputs_type = 'addresses'       # TODO: add UTXO support
     data = {
-            'inputs':  [{inputs_type:  inputs}], 
-            'confirmations': 0, 
-            'preference': 'high', 
+            'inputs':  [{inputs_type:  inputs}],
+            'confirmations': 0,
+            'preference': 'high',
             'outputs': [{outputs_type: outputs, "value": output_value}]
             }
     if change_address:
-        data["change_address"] = change_address    # 
+        data["change_address"] = change_address
     jdata = json.loads(make_request(url, data))
-    hash, txh = jdata.get("tosign")[0], jdata.get("tosign_tx")[0]
-    assert bin_dbl_sha256(txh.decode('hex')).encode('hex') == hash, "checksum mismatch %s" % hash
+    _, txh = jdata.get("tosign")[0], jdata.get("tosign_tx")[0]
+    #  assert bin_dbl_sha256(
+    #  txh.decode('hex')
+    #  ).encode('hex') == hash, "checksum mismatch %s" % hash
     return txh.encode("utf-8")
+
 
 blockcypher_mktx = get_tx_composite

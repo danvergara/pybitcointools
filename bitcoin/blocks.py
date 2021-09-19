@@ -1,4 +1,5 @@
-from bitcoin.main import *
+from .main import bin_sha256, sha256
+from .py3specials import encode, decode
 
 
 def serialize_header(inp):
