@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "pybitcointools"
+version = "0.1.0"
+description = "Python Bitcoin Tool"
+license = "MIT"
+readme = "README.md"
+authors = ["Daniel Omar Vergara Pérez <daniel.omar.vergara@gmail.com>"]
+homepage = "http://github.com/danvergara/pybitcointools"
+repository = "http://github.com/danvergara/pybitcointools"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+coverage = {extras = ["toml"], version = "^5.5"}
+pytest-cov = "^2.12.1"
+isort = "^5.9.3"
+black = "^21.9b0"
+flake8 = "^3.9.2"
+flake8-black = "^0.2.3"
+flake8-isort = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["bitcoin"]
+
+[tool.coverage.report]
+show_missing = true
+# fail_under = 60
+
+[tool.isort]
+profile = "black"
