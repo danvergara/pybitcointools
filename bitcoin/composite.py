@@ -1,27 +1,27 @@
-from .main import privtoaddr, privtopub
-from .transaction import (
-    select,
-    mksend,
-    signall,
-    mk_multisig_script,
-    scriptaddr,
-    deserialize,
-    deserialize_script,
-    serialize,
-    serialize_script,
-    multisign,
-    script_to_address,
-)
 from .bci import (
-    unspent,
-    pushtx,
     fetchtx,
+    get_block_header_data,
     get_block_height,
     get_txs_in_block,
-    get_block_header_data,
+    pushtx,
+    unspent,
 )
-from .deterministic import bip32_descend
 from .blocks import mk_merkle_proof
+from .deterministic import bip32_descend
+from .main import privtoaddr, privtopub
+from .transaction import (
+    deserialize,
+    deserialize_script,
+    mk_multisig_script,
+    mksend,
+    multisign,
+    script_to_address,
+    scriptaddr,
+    select,
+    serialize,
+    serialize_script,
+    signall,
+)
 
 
 # Takes privkey, address, value (satoshis), fee (satoshis)
@@ -77,7 +77,7 @@ def bip32_hdm_script(*args):
             keys.append(args[i])
             i += 1
         req = int(args[i])
-        path = map(int, args[(i + 1):])
+        path = map(int, args[(i + 1) :])
     pubs = sorted(map(lambda x: bip32_descend(x, path), keys))
     return mk_multisig_script(pubs, req)
 

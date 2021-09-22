@@ -1,6 +1,6 @@
+import binascii
 import hashlib
 import os.path
-import binascii
 import random
 from bisect import bisect_left
 
@@ -86,7 +86,7 @@ def words_verify(words, wordlist=wordlist_english):
     entropy_bits = mint_bits - cs_bits
     eint = mint >> cs_bits
     csint = mint & ((1 << cs_bits) - 1)
-    ebytes = _eint_to_bytes(eint, entropy_bits)
+    ebytes = eint_to_bytes(eint, entropy_bits)
     return csint == entropy_cs(ebytes)
 
 
@@ -101,8 +101,8 @@ def mnemonic_to_seed(mnemonic_phrase, passphrase=b""):
 
     except Exception:
         try:
+            from Crypto.Hash import HMAC, SHA512
             from Crypto.Protocol.KDF import PBKDF2
-            from Crypto.Hash import SHA512, HMAC
 
             def pbkdf2_hmac_sha256(password, salt, iters=2048):
                 return PBKDF2(
@@ -116,8 +116,9 @@ def mnemonic_to_seed(mnemonic_phrase, passphrase=b""):
         except Exception:
             try:
 
-                from pbkdf2 import PBKDF2
                 import hmac
+
+                from pbkdf2 import PBKDF2
 
                 def pbkdf2_hmac_sha256(password, salt, iters=2048):
                     return PBKDF2(

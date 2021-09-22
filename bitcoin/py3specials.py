@@ -1,8 +1,8 @@
-import os
 import binascii
 import hashlib
+import os
 
-string_types = (str)
+string_types = str
 string_or_bytes_types = (str, bytes)
 int_types = (int, float)
 
@@ -64,10 +64,12 @@ def decode(string, base):
     result = 0
 
     if base == 256:
+
         def extract(d, cs):
             return d
 
     else:
+
         def extract(d, cs):
             return cs.find(d if isinstance(d, str) else chr(d))
 

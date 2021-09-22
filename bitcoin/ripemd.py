@@ -35,8 +35,8 @@
 # * ftp://ftp.rsasecurity.com/pub/cryptobytes/crypto3n2.pdf
 # */
 
-import sys
 import struct
+import sys
 
 try:
     import psyco

@@ -1,36 +1,38 @@
 #!/usr/bin/python
 import binascii
-import re
 import copy
+import re
+
 from _functools import reduce
 
 from bitcoin.main import (
-    num_to_var_int,
+    b58check_to_hex,
     dbl_sha256,
+    ecdsa_raw_recover,
     ecdsa_raw_sign,
     ecdsa_raw_verify,
-    ecdsa_raw_recover,
     encode_pubkey,
-    b58check_to_hex,
-    hex_to_b58check,
     hash160,
+    hex_to_b58check,
+    num_to_var_int,
     privkey_to_pubkey,
     pubkey_to_address,
 )
+
 from .py3specials import (
-    string_types,
-    string_or_bytes_types,
-    int_types,
-    get_code_string,
-    safe_hexlify,
-    decode,
-    from_byte_to_int,
-    encode,
-    changebase,
-    from_string_to_bytes,
     bin_dbl_sha256,
     bin_to_b58check,
+    changebase,
+    decode,
+    encode,
+    from_byte_to_int,
     from_int_to_byte,
+    from_string_to_bytes,
+    get_code_string,
+    int_types,
+    safe_hexlify,
+    string_or_bytes_types,
+    string_types,
 )
 from .ripemd import is_python2
 

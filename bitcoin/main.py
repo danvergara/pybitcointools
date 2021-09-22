@@ -1,28 +1,28 @@
 #!/usr/bin/python
 
+import base64
 import binascii
 import hashlib
-import re
-import base64
-import time
-import random
 import hmac
+import random
+import re
+import time
 
 from .py3specials import (
-    from_int_to_byte,
-    encode,
-    decode,
-    from_byte_to_int,
-    safe_from_hex,
-    int_types,
     bin_to_b58check,
     bytes_to_hex_string,
-    safe_hexlify,
-    from_string_to_bytes,
-    random_string,
     changebase,
+    decode,
+    encode,
+    from_byte_to_int,
+    from_int_to_byte,
+    from_string_to_bytes,
+    int_types,
+    random_string,
+    safe_from_hex,
+    safe_hexlify,
 )
-from .ripemd import is_python2, RIPEMD160
+from .ripemd import RIPEMD160, is_python2
 
 # Elliptic curve parameters (secp256k1)
 

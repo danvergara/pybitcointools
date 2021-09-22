@@ -1,29 +1,29 @@
-import hmac
-import hashlib
 import binascii
+import hashlib
+import hmac
 
 from .main import (
-    slowsha,
-    privkey_to_pubkey,
-    dbl_sha256,
     add_privkeys,
-    encode_pubkey,
-    bin_dbl_sha256,
     add_pubkeys,
-    privtopub,
-    pubkey_to_address,
-    subtract_privkeys,
+    bin_dbl_sha256,
     bin_hash160,
     compress,
+    dbl_sha256,
+    encode_pubkey,
     hash_to_int,
+    privkey_to_pubkey,
+    privtopub,
+    pubkey_to_address,
+    slowsha,
+    subtract_privkeys,
 )
 from .py3specials import (
-    from_int_representation_to_bytes,
-    encode,
-    from_int_to_byte,
     changebase,
-    from_byte_to_int,
     decode,
+    encode,
+    from_byte_to_int,
+    from_int_representation_to_bytes,
+    from_int_to_byte,
     from_string_to_bytes,
     safe_hexlify,
 )
@@ -123,7 +123,7 @@ def raw_bip32_ckd(rawtuple, i):
     else:
         pub = key
 
-    if i >= 2**31:
+    if i >= 2 ** 31:
         if vbytes in PUBLIC:
             raise Exception("Can't do private derivation on public key!")
         h = hmac.new(chaincode, b"\x00" + priv[:32] + encode(i, 256, 4), hashlib.sha512)
