@@ -1,0 +1,5 @@
+# .flake8
+[flake8]
+select = BLK,C,E,F,I,W
+ignore = E203,E501,W503
+application-import-names = bitcoin
