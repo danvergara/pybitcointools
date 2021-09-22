@@ -1,5 +1,8 @@
 #!/usr/bin/python
-import sys, json, re
+import json
+import re
+import sys
+
 from bitcoin import *
 
 if len(sys.argv) == 1:
