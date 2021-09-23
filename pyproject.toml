@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "pybitcointools"
+name = "pybtctools"
 version = "0.1.0"
 description = "Python Bitcoin Tool"
 license = "MIT"
 readme = "README.md"
 authors = ["Daniel Omar Vergara Pérez <daniel.omar.vergara@gmail.com>"]
-homepage = "http://github.com/danvergara/pybitcointools"
-repository = "http://github.com/danvergara/pybitcointools"
+homepage = "http://github.com/danvergara/pybtctools"
+repository = "http://github.com/danvergara/pybtctools"
 
 [tool.poetry.dependencies]
 python = "^3.8"
