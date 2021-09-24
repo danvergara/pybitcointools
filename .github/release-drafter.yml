@@ -6,3 +6,7 @@ categories:
       - 'fix'
       - 'bugfix'
       - 'bug'
+template: |
+  ## What’s Changed
+
+  $CHANGES
