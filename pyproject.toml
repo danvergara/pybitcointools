@@ -7,6 +7,9 @@ readme = "README.md"
 authors = ["Daniel Omar Vergara Pérez <daniel.omar.vergara@gmail.com>"]
 homepage = "http://github.com/danvergara/pybtctools"
 repository = "http://github.com/danvergara/pybtctools"
+packages = [
+    { include = "bitcoin" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
