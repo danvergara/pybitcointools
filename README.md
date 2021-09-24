@@ -4,6 +4,7 @@
 
 [![Tests](https://github.com/danvergara/pybtctools/workflows/Tests/badge.svg)](https://github.com/danvergara/pybtctools/actions?workflow=Tests)
 [![PyPI](https://img.shields.io/pypi/v/pybtctools.svg)](https://pypi.org/project/pybtctools/)
+[![Read the Docs](https://readthedocs.org/projects/pybtctools/badge/)](https://pybtctools.readthedocs.io/)
 
 ### Features:
 
