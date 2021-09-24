@@ -10,6 +10,7 @@ repository = "http://github.com/danvergara/pybtctools"
 packages = [
     { include = "bitcoin" },
 ]
+documentation = "https://pybtctools.readthedocs.io"
 
 [tool.poetry.dependencies]
 python = "^3.8"
