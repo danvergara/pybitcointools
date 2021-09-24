@@ -1,3 +1,14 @@
+"""Python Bitcoin Tool"""
+try:
+    from importlib.metadata import PackageNotFoundError, version  # type: ignore
+except ImportError:  # pragma: no cover
+    from importlib_metadata import PackageNotFoundError, version  # type: ignore
+
+try:
+    __version__ = version(__name__)
+except PackageNotFoundError:  # pragma: no cover
+    __version__ = "unknown"
+
 from bitcoin.bci import fetchtx, history, pushtx, unspent
 from bitcoin.deterministic import (
     TESTNET_PRIVATE,
