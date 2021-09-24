@@ -3,6 +3,7 @@
 > Python library for Bitcoin signatures and transactions
 
 [![Tests](https://github.com/danvergara/pybtctools/workflows/Tests/badge.svg)](https://github.com/danvergara/pybtctools/actions?workflow=Tests)
+[![PyPI](https://img.shields.io/pypi/v/pybtctools.svg)](https://pypi.org/project/pybtctools/)
 
 ### Features:
 
